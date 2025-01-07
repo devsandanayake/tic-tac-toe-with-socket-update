@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:3001');
+const socket = io('http://localhost:3003');
 
 const GameRoom = () => {
     const router = useRouter();
@@ -20,6 +20,8 @@ const GameRoom = () => {
         if (gameRoomId) {
             socket.emit('joinGame', gameRoomId);
         }
+
+        console.log(gameRoomId);
 
         socket.on('move', ({ index, symbol }) => {
             setBoard(prevBoard => {
