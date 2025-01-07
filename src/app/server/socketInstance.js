@@ -1,7 +1,7 @@
 const http = require('http');
 const io = require('socket.io')({
     cors: {
-        origin: "http://localhost:3001", // Allow requests from this origin
+        origin: "*", // Allow requests from this origin
         methods: ["GET", "POST"]
     }
 });
