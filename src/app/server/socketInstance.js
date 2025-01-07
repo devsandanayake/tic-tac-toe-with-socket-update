@@ -1,7 +1,7 @@
 const http = require('http');
 const io = require('socket.io')({
     cors: {
-        origin: process.env.CORS_ORIGIN || "http://localhost:3003",
+        origin: "http://localhost:3000", // Allow requests from this origin
         methods: ["GET", "POST"]
     }
 });
