@@ -17,9 +17,9 @@ const GameRoom = () => {
   
      
     useEffect(() => {
-        if (gameRoomId) {
+        
             socket.emit('joinGame', gameRoomId);
-        }
+        
 
         console.log(gameRoomId);
 
