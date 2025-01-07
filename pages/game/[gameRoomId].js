@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:3003');
+const socket = io('http://localhost:3001');
 
 const GameRoom = () => {
     const router = useRouter();
