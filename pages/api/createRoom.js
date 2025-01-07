@@ -33,7 +33,7 @@ export default function handler(req, res) {
                 gameStateId: result.insertedId,
                 name: modifiedData.gameSessionUuid,
                 createDate: modifiedData.cleatedDate,
-                link1: `http://localhost:3003/game/${modifiedData.gameSessionUuid}&gameStateId=${result.insertedId}&uuid=${modifiedData.players[0].uuid}`,
+                link1: `http://localhost:3002/game/${modifiedData.gameSessionUuid}`,
             }
         };
 

@@ -14,6 +14,8 @@ const GameRoom = () => {
     const [status, setStatus] = useState('');
     const [hasStarted, setHasStarted] = useState(false);
     const [mySymbol, setMySymbol] = useState('');
+
+    
   
      
     useEffect(() => {
