@@ -9,12 +9,10 @@ const io = require('socket.io')({
 io.on('connection', (socket) => {
     console.log('A user connected');
 
-
     socket.on('joinGame', (gameRoomId) => {
-        console.log(`User attempting to join game room: ${gameRoomId}`);
         const room = io.sockets.adapter.rooms.get(gameRoomId);
         const numClients = room ? room.size : 0;
-         
+
         if (numClients === 0) {
             socket.join(gameRoomId);
             socket.emit('gameJoined', { gameRoomId });

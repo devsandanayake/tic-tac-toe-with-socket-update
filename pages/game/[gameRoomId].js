@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:3003');
+const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3003');
 
 const GameRoom = () => {
     const router = useRouter();
@@ -20,8 +20,6 @@ const GameRoom = () => {
         if (gameRoomId) {
             socket.emit('joinGame', gameRoomId);
         }
-
-        console.log(gameRoomId);
 
         socket.on('move', ({ index, symbol }) => {
             setBoard(prevBoard => {
@@ -96,7 +94,7 @@ const GameRoom = () => {
             ],
         };
         try {
-            const response = await fetch('https://safa-backend.safaesport.com/api/external_game/v1/game_session_finish', {
+            const response = await fetch('<game-base-url>/api/external_game/v1/game_session_finish', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
