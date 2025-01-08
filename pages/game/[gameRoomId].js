@@ -8,19 +8,41 @@ const GameRoom = () => {
     const router = useRouter();
     const { gameRoomId } = router.query; // Extract gameRoomId from the URL path
     const { gameStateId, uuid } = router.query; // Extract gameStateId and uuid from the query parameters
-                                  
+
     const [board, setBoard] = useState(Array(9).fill(null));
     const [isXNext, setIsXNext] = useState(true);
     const [status, setStatus] = useState('');
     const [hasStarted, setHasStarted] = useState(false);
     const [mySymbol, setMySymbol] = useState('');
-  
-     
+    const [gameRoom, setGameRoom] = useState(null);
+    const [playerUUIDs, setPlayerUUIDs] = useState({ player1: '', player2: '' });
+
     useEffect(() => {
         if (gameRoomId) {
-            socket.emit('joinGame', gameRoomId);
+            fetch(`/api/getGameRoom?gameSessionUuid=${gameRoomId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    setGameRoom(data);
+                    const player = data.players.find(player => player.uuid === uuid);
+                    if (player) {
+                        setMySymbol(player.symbol);
+                    }
+                    setPlayerUUIDs({ player1: data.players[0].uuid, player2: data.players[1].uuid });
+                    socket.emit('joinGame', gameRoomId);
+                })
+                .catch(error => {
+                    console.error('Error fetching game room:', error);
+                    setStatus('Error fetching game room');
+                });
         }
+    }, [gameRoomId, uuid]);
 
+    useEffect(() => {
         socket.on('move', ({ index, symbol }) => {
             setBoard(prevBoard => {
                 const newBoard = [...prevBoard];
@@ -62,6 +84,10 @@ const GameRoom = () => {
             return;
         }
         if (board[index] || calculateWinner(board)) return;
+        if (mySymbol !== (isXNext ? 'X' : 'O')) {
+            setStatus(`It's not your turn`);
+            return;
+        }
         const symbol = isXNext ? 'X' : 'O';
         socket.emit('move', { gameRoomId, index, symbol });
     };
@@ -74,6 +100,37 @@ const GameRoom = () => {
         }
     };
 
+    const calculateWinner = (board) => {
+        const lines = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6],
+        ];
+
+        for (let line of lines) {
+            const [a, b, c] = line;
+            if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                return board[a];
+            }
+        }
+        return null;
+    };
+
+    const winner = calculateWinner(board);
+    const isBoardFull = board.every(cell => cell !== null);
+    const gameStatus = winner ? `Winner: ${winner}` : isBoardFull ? 'Tie Match' : `Next player: ${isXNext ? 'X' : 'O'}`;
+
+    useEffect(() => {
+        if (winner || isBoardFull) {
+            sendGameResults(winner, isBoardFull);
+        }
+    }, [winner, isBoardFull]);
+
     const sendGameResults = async (winner, isTie) => {
         const payload = {
             room: {
@@ -82,19 +139,20 @@ const GameRoom = () => {
             },
             players: [
                 {
-                    uuid: "uuid_id_1", // Replace with the actual user UUID
+                    uuid: playerUUIDs.player1, // Use the actual user UUID from state
                     points: winner === 'X' ? 100 : isTie ? 50 : 0,
                     userGameSessionStatus: winner === 'X' ? "WON" : isTie ? "TIE" : "DEFEATED",
                 },
                 {
-                    uuid: "uuid_id_2", // Replace with the actual user UUID
+                    uuid: playerUUIDs.player2, // Use the actual user UUID from state
                     points: winner === 'O' ? 100 : isTie ? 50 : 0,
                     userGameSessionStatus: winner === 'O' ? "WON" : isTie ? "TIE" : "DEFEATED",
                 },
             ],
         };
+        console.log('Sending game results:', payload);
         try {
-            const response = await fetch('<game-base-url>/api/external_game/v1/game_session_finish', {
+            const response = await fetch('https://safa-backend.safaesport.com/api/external_game/v1/game_session_finish', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -112,16 +170,6 @@ const GameRoom = () => {
             setStatus(`Network error: ${error.message}`);
         }
     };
-
-    const winner = calculateWinner(board);
-    const isBoardFull = board.every(cell => cell !== null);
-    const gameStatus = winner ? `Winner: ${winner}` : isBoardFull ? 'Tie Match' : `Next player: ${isXNext ? 'X' : 'O'}`;
-
-    useEffect(() => {
-        if (winner || isBoardFull) {
-            sendGameResults(winner, isBoardFull);
-        }
-    }, [winner, isBoardFull]);
 
     return (
         <div className="game-container">
@@ -213,27 +261,6 @@ const GameRoom = () => {
             `}</style>
         </div>
     );
-};
-
-const calculateWinner = (board) => {
-    const lines = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6],
-    ];
-
-    for (let line of lines) {
-        const [a, b, c] = line;
-        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-            return board[a];
-        }
-    }
-    return null;
 };
 
 export default GameRoom;

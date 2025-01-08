@@ -1,44 +1,58 @@
+import { MongoClient } from 'mongodb';
 import { v4 as uuidv4 } from 'uuid';
 
-export default function handler(req, res) {
+const uri = 'mongodb+srv://dev:1234@mernapp.zwstxds.mongodb.net/?retryWrites=true&w=majority&appName=mernApp'; // Replace with your MongoDB connection string
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+export default async function handler(req, res) {
     if (req.method === 'POST') {
         const { room, players } = req.body;
-        if (!room || !players || players.length !== 2) {
-            return res.status(400).json({ error: 'Room and two players are required' });
-        }
+        const { name, gameSessionUuid } = room;
 
-        const { name: roomName, gameSessionUuid } = room;
-        const [player1, player2] = players;
-
-        if (!roomName || !gameSessionUuid || !player1.name || !player2.name) {
+        if (!name || !gameSessionUuid || players.length !== 2 || !players[0].name || !players[1].name) {
             return res.status(400).json({ error: 'Room name, game session UUID, and both player names are required' });
         }
 
-        // const gameRoomId = gameSessionUuid;
-        // const gameLink = `http://localhost:3000/game/${gameRoomId}`;
+        // Randomly assign 'X' or 'O' to the players
+        const symbols = ['X', 'O'];
+        const randomIndex = Math.floor(Math.random() * symbols.length);
+        players[0].symbol = symbols[randomIndex];
+        players[1].symbol = symbols[1 - randomIndex];
 
-        // Here you would typically save the game room details to a database
-        const result = { insertedId: uuidv4() }; // Mocking database insertion result
-        const modifiedData = {
-            gameSessionUuid,
-            players,
-            cleatedDate: new Date().toISOString()
-        };
+        try {
+            await client.connect();
+            const database = client.db('tic-tac-toe'); // Replace with your database name
+            const collection = database.collection('rooms');
 
-        const response = {
-            status: true,
-            message: 'success',
-            payload: {
-                gameSessionUuid: modifiedData.gameSessionUuid,
-                gameStateId: result.insertedId,
-                name: modifiedData.gameSessionUuid,
-                createDate: modifiedData.cleatedDate,
-                link1: `http://144.126.243.236:3001/game/${modifiedData.gameSessionUuid}`,
-            }
-        };
+            const modifiedData = {
+                gameSessionUuid,
+                name,
+                players,
+                createdDate: new Date().toISOString()
+            };
 
-        return res.status(200).json(response);
+            const result = await collection.insertOne(modifiedData);
+
+            const response = {
+                status: true,
+                message: 'success',
+                payload: {
+                    gameSessionUuid: modifiedData.gameSessionUuid,
+                    gameStateId: result.insertedId,
+                    name: modifiedData.name,
+                    createDate: modifiedData.createdDate,
+                    link1: `http://localhost:3000/game/${modifiedData.gameSessionUuid}?gameStateId=${result.insertedId}&uuid=${modifiedData.players[0].uuid}`,
+                }
+            };
+
+            return res.status(200).json(response);
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        } finally {
+            await client.close();
+        }
     } else {
-        return res.status(405).json({ error: 'Method not allowed' });
+        return res.status(405).json({ error: 'Method Not Allowed' });
     }
 }
