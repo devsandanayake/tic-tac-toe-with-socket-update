@@ -6,7 +6,7 @@
     "dev": "concurrently \"next dev\" \"npm run websocket:dev\"",
     "websocket:dev": "node src/app/server/server.js",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3001",
     "lint": "next lint"
   },
   "dependencies": {
