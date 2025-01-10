@@ -6,8 +6,7 @@ const socket = io('http://144.126.243.236:3003' || 'http://localhost:3003');
 
 const GameRoom = () => {
     const router = useRouter();
-    const { gameRoomId } = router.query; // Extract gameRoomId from the URL path
-    const { gameStateId, uuid } = router.query; // Extract gameStateId and uuid from the query parameters
+    const { gameSessionUuid, gameStateId, uuid } = router.query; // Extract query parameters
 
     const [board, setBoard] = useState(Array(9).fill(null));
     const [isXNext, setIsXNext] = useState(true);
@@ -18,8 +17,8 @@ const GameRoom = () => {
     const [playerUUIDs, setPlayerUUIDs] = useState({ player1: '', player2: '' });
 
     useEffect(() => {
-        if (gameRoomId) {
-            fetch(`/api/getGameRoom?gameSessionUuid=${gameRoomId}`)
+        if (gameSessionUuid) {
+            fetch(`/api/getGameRoom?gameSessionUuid=${gameSessionUuid}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
@@ -33,14 +32,14 @@ const GameRoom = () => {
                         setMySymbol(player.symbol);
                     }
                     setPlayerUUIDs({ player1: data.players[0].uuid, player2: data.players[1].uuid });
-                    socket.emit('joinGame', gameRoomId);
+                    socket.emit('joinGame', gameSessionUuid);
                 })
                 .catch(error => {
                     console.error('Error fetching game room:', error);
                     setStatus('Error fetching game room');
                 });
         }
-    }, [gameRoomId, uuid]);
+    }, [gameSessionUuid, uuid]);
 
     useEffect(() => {
         socket.on('move', ({ index, symbol }) => {
@@ -76,7 +75,7 @@ const GameRoom = () => {
             socket.off('resetGame');
             socket.off('error');
         };
-    }, [gameRoomId]);
+    }, [gameSessionUuid]);
 
     const handleClick = (index) => {
         if (!hasStarted) {
@@ -89,14 +88,14 @@ const GameRoom = () => {
             return;
         }
         const symbol = isXNext ? 'X' : 'O';
-        socket.emit('move', { gameRoomId, index, symbol });
+        socket.emit('move', { gameRoomId: gameSessionUuid, index, symbol });
     };
 
     const reset = (isUserInitiated = true) => {
         setBoard(Array(9).fill(null));
         setIsXNext(true);
         if (isUserInitiated) {
-            socket.emit('resetGame', gameRoomId);
+            socket.emit('resetGame', gameSessionUuid);
         }
     };
 
@@ -134,7 +133,7 @@ const GameRoom = () => {
     const sendGameResults = async (winner, isTie) => {
         const payload = {
             room: {
-                gameSessionUuid: gameRoomId,
+                gameSessionUuid,
                 gameStatus: "FINISHED",
             },
             players: [
@@ -150,9 +149,8 @@ const GameRoom = () => {
                 },
             ],
         };
-        console.log('Sending game results:', payload);
         try {
-            const response = await fetch('https://safa-backend.safaesport.com/api/external_game/v1/game_session_finish', {
+            const response = await fetch('<game-base-url>/api/external_game/v1/game_session_finish', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -175,7 +173,7 @@ const GameRoom = () => {
         <div className="game-container">
             <div className="game-info">
                 <div className="game-room-title">
-                    {`Game Room: ${gameRoomId}`}
+                    {`Game Room: ${gameSessionUuid}`}
                 </div>
                 {status && <div className="status">{status}</div>}
             </div>
