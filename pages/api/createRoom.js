@@ -2,7 +2,26 @@ import { MongoClient } from 'mongodb';
 import { v4 as uuidv4 } from 'uuid';
 
 const uri = process.env.MONGODB_URI || 'mongodb+srv://dev:1234@mernapp.zwstxds.mongodb.net/?retryWrites=true&w=majority&appName=mernApp'; // Replace with your MongoDB connection string
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+let client;
+let clientPromise;
+
+if (!uri) {
+    throw new Error('Please add your Mongo URI to .env.local');
+}
+
+if (process.env.NODE_ENV === 'development') {
+    // In development mode, use a global variable so the MongoClient is not constantly recreated
+    if (!global._mongoClientPromise) {
+        client = new MongoClient(uri);
+        global._mongoClientPromise = client.connect();
+    }
+    clientPromise = global._mongoClientPromise;
+} else {
+    // In production mode, it's best to not use a global variable
+    client = new MongoClient(uri);
+    clientPromise = client.connect();
+}
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
@@ -20,7 +39,7 @@ export default async function handler(req, res) {
         players[1].symbol = symbols[1 - randomIndex];
 
         try {
-            await client.connect();
+            const client = await clientPromise;
             const database = client.db('tic-tac-toe'); // Replace with your database name
             const collection = database.collection('rooms');
 
@@ -54,8 +73,6 @@ export default async function handler(req, res) {
         } catch (error) {
             console.error(error);
             return res.status(500).json({ error: 'Internal Server Error' });
-        } finally {
-            await client.close();
         }
     } else {
         return res.status(405).json({ error: 'Method Not Allowed' });
