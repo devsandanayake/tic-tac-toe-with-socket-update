@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 
-const socket = io('http://144.126.243.236:3003' || 'http://localhost:3003');
+const socket = io('http://144.126.243.236:3003');
 
 const GameRoom = () => {
     const router = useRouter();
@@ -24,7 +24,7 @@ const GameRoom = () => {
     useEffect(() => {
         if (!gameSessionUuid) return; // Ensure the gameSessionUuid is available
 
-        fetch(`/api/getGameRoom?gameSessionUuid=${gameSessionUuid}`)
+        fetch(`/api/${gameSessionUuid}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -44,7 +44,7 @@ const GameRoom = () => {
                 console.error('Error fetching game room:', error);
                 setStatus('Error fetching game room');
             });
-    }, [gameSessionUuid, uuid]);
+    }, [gameSessionUuid, gameStateId, uuid]);
 
     useEffect(() => {
         socket.on('move', ({ index, symbol }) => {
