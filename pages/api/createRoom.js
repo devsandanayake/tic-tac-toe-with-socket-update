@@ -28,9 +28,9 @@ export default async function handler(req, res) {
         const { room, players } = req.body;
         const { name, gameSessionUuid } = room;
 
-        if (!name || !gameSessionUuid || players.length !== 2 || !players[0].name || !players[1].name) {
-            return res.status(400).json({ error: 'Room name, game session UUID, and both player names are required' });
-        }
+        // if (!name || !gameSessionUuid || players.length !== 2 || !players[0].name || !players[1].name) {
+        //     return res.status(400).json({ error: 'Room name, game session UUID, and both player names are required' });
+        // }
 
         // Randomly assign 'X' or 'O' to the players
         const symbols = ['X', 'O'];
