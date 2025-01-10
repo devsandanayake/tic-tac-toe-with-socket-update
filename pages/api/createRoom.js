@@ -41,7 +41,7 @@ export default async function handler(req, res) {
                     gameStateId: result.insertedId,
                     name: modifiedData.name,
                     createDate: modifiedData.createdDate,
-                    link1: `http://144.126.243.236:3001/?gameSessionUuid=${modifiedData.gameSessionUuid}?gameStateId=${result.insertedId}&uuid=${modifiedData.players[0].uuid}`,
+                    link1: `/?gameSessionUuid=${modifiedData.gameSessionUuid}?gameStateId=${result.insertedId}&uuid=${modifiedData.players[0].uuid}`,
                 }
             };
 
