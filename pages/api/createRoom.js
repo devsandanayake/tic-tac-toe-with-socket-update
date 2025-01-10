@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 import { v4 as uuidv4 } from 'uuid';
 
-const uri = 'mongodb+srv://dev:1234@mernapp.zwstxds.mongodb.net/?retryWrites=true&w=majority&appName=mernApp'; // Replace with your MongoDB connection string
+const uri = process.env.MONGODB_URI || 'mongodb+srv://dev:1234@mernapp.zwstxds.mongodb.net/?retryWrites=true&w=majority&appName=mernApp'; // Replace with your MongoDB connection string
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 export default async function handler(req, res) {
@@ -31,6 +31,11 @@ export default async function handler(req, res) {
                 createdDate: new Date().toISOString()
             };
 
+            const existingRoom = await collection.findOne({ gameSessionUuid });
+            if (existingRoom) {
+                return res.status(400).json({ error: 'Room with this game session UUID already exists' });
+            }
+
             const result = await collection.insertOne(modifiedData);
 
             const response = {
@@ -41,7 +46,7 @@ export default async function handler(req, res) {
                     gameStateId: result.insertedId,
                     name: modifiedData.name,
                     createDate: modifiedData.createdDate,
-                    link1: `/?gameSessionUuid=${modifiedData.gameSessionUuid}?gameStateId=${result.insertedId}&uuid=${modifiedData.players[0].uuid}`,
+                    link1: `/?gameSessionUuid=${modifiedData.gameSessionUuid}&gameStateId=${result.insertedId}&uuid=${modifiedData.players[0].uuid}`,
                 }
             };
 
