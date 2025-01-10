@@ -56,8 +56,8 @@ const GameRoom = () => {
             });
         });
 
-        socket.on('gameJoined', ({ gameRoomId }) => {
-            setStatus(`Joined game room ${gameRoomId}`);
+        socket.on('gameJoined', ({ gameSessionUuid }) => {
+            setStatus(`Joined game room ${gameSessionUuid}`);
         });
 
         socket.on('userJoined', ({ userId }) => {
