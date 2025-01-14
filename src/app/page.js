@@ -155,7 +155,7 @@ const GameRoom = () => {
             ],
         };
         try {
-            const response = await fetch('<game-base-url>/api/external_game/v1/game_session_finish', {
+            const response = await fetch('https://safa-backend.safaesport.com/api/external_game/v1/game_session_finish', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
