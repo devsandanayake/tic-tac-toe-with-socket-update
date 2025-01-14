@@ -138,7 +138,7 @@ const GameRoom = () => {
     const sendGameResults = async (winner, isTie) => {
         const payload = {
             room: {
-                gameSessionUuid,
+                gameSessionUuid: gameSessionUuid,
                 gameStatus: "FINISHED",
             },
             players: [
