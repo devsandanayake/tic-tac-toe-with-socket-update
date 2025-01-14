@@ -180,7 +180,7 @@ const GameRoom = () => {
         <div className="game-container">
             <div className="game-info">
                 <div className="game-room-title">
-                    {`Game Room: Tic Tac Toe - ${gameRoom?.name}`}
+                    {`Game Room: Tic Tac Toe`}
                 </div>
                 {status && <div className="status">{status}</div>}
             </div>
