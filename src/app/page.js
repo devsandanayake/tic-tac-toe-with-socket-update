@@ -164,6 +164,8 @@ const GameRoom = () => {
                 body: JSON.stringify(payload),
             });
 
+            console.log('Response status:', response.status);
+
             const result = await response.json();
             if (response.ok) {
                 setStatus('Game results submitted successfully');
