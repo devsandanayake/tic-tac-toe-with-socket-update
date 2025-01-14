@@ -157,6 +157,7 @@ const GameRoom = () => {
         try {
             const response = await fetch('https://safa-backend.safaesport.com/api/external_game/v1/game_session_finish', {
                 method: 'POST',
+                mode: 'no-cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },
