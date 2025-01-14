@@ -171,6 +171,7 @@ const GameRoom = () => {
             }
         } catch (error) {
             setStatus(`Network error: ${error.message}`);
+            console.log(error);
         }
     };
 
