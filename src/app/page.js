@@ -180,7 +180,7 @@ const GameRoom = () => {
         <div className="game-container">
             <div className="game-info">
                 <div className="game-room-title">
-                    {`Game Room: ${gameSessionUuid}`}
+                    {`Game Room: Tic Tac Toe - ${gameRoom?.name}`}
                 </div>
                 {status && <div className="status">{status}</div>}
             </div>
