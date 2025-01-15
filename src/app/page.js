@@ -202,7 +202,7 @@ const GameRoom = () => {
             {/* Opponent's Symbol */}
             <div className="player">
                 <div className="player-symbol">
-                    {`Opponent: ${mySymbol === ' X' ? ' O' : ' X'}`}
+                    {` Opponent: ${mySymbol === ' X' ? ' O' : ' X'}`}
                 </div>
             </div>
         </div>
