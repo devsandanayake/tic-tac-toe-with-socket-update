@@ -99,9 +99,13 @@ const GameRoom = () => {
     const reset = (isUserInitiated = true) => {
         setBoard(Array(9).fill(null));
         setIsXNext(true);
-        if (isUserInitiated) {
+        /*if (isUserInitiated) {
             socket.emit('resetGame', gameSessionUuid);
-        }
+        }*/
+        setHasStarted(false);  // Stop the game once it is reset
+
+        // Optionally close the window or navigate away
+        window.close(); 
     };
 
     const calculateWinner = (board) => {
@@ -203,7 +207,7 @@ const GameRoom = () => {
                     className="reset-button"
                     onClick={() => reset(true)}
                 >
-                    Reset
+                    Close
                 </button>
             )}
             
