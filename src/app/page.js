@@ -174,7 +174,7 @@ const GameRoom = () => {
                 setStatus(`Error submitting game results: ${result.message}`);
             }
         } catch (error) {
-            setStatus(`Network error: ${error.message}`);
+            // setStatus(`Network error: ${error.message}`);
             console.log(error);
         }
     };
@@ -186,6 +186,9 @@ const GameRoom = () => {
                     {`Tic Tac Toe`}
                 </div>
                 {status && <div className="status">{status}</div>}
+ 
+                {winner && <div className="winner-message">{`Winner: ${winner}`}</div>}
+ 
             </div>
             {/* Player Info Section */}
         <div className="player-info">
@@ -225,7 +228,7 @@ const GameRoom = () => {
             )}
             
             <style jsx>{`
-            /* General Container */
+ 
 .game-container {
     padding: 20px;
     background-color: #e0f7fa; /* Light blue background */
@@ -415,6 +418,7 @@ const GameRoom = () => {
         font-size: 1.1rem;
     }
 }
+ 
 .player-info {
                 display: flex;
                 justify-content: space-between;
@@ -431,8 +435,10 @@ const GameRoom = () => {
                 font-weight: bold;
             }
 
-
-            `}</style>
+ 
+ 
+    `}</style>
+ 
         </div>
     );
 };
