@@ -195,14 +195,14 @@ const GameRoom = () => {
             {/* Current Player's Symbol */}
             <div className="player">
                 <div className="player-symbol">
-                    {`You: ${mySymbol}`}
+                    {`You: ${mySymbol} &nbsp;`}
                 </div>
             </div>
 
             {/* Opponent's Symbol */}
             <div className="player">
                 <div className="player-symbol">
-                    {` Opponent: ${mySymbol === ' X' ? ' O' : ' X'}`}
+                    {`&nbsp; Opponent: ${mySymbol === ' X' ? ' O' : ' X'}`}
                 </div>
             </div>
         </div>
