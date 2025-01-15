@@ -102,10 +102,7 @@ const GameRoom = () => {
         /*if (isUserInitiated) {
             socket.emit('resetGame', gameSessionUuid);
         }*/
-        setHasStarted(false);  // Stop the game once it is reset
-
-        // Optionally close the window or navigate away
-        window.close(); 
+        
     };
 
     const calculateWinner = (board) => {
@@ -186,10 +183,26 @@ const GameRoom = () => {
         <div className="game-container">
             <div className="game-info">
                 <div className="game-room-title">
-                    {`Game Room: Tic Tac Toe`}
+                    {`Tic Tac Toe`}
                 </div>
                 {status && <div className="status">{status}</div>}
             </div>
+            {/* Player Info Section */}
+        <div className="player-info">
+            {/* Current Player's Symbol */}
+            <div className="player">
+                <div className="player-symbol">
+                    {`You: ${mySymbol}`}
+                </div>
+            </div>
+
+            {/* Opponent's Symbol */}
+            <div className="player">
+                <div className="player-symbol">
+                    {`Opponent: ${mySymbol === ' X' ? ' O' : ' X'}`}
+                </div>
+            </div>
+        </div>
             <div className="game-board">
                 {board.map((cell, index) => (
                     <button
@@ -305,7 +318,7 @@ const GameRoom = () => {
 }
 
 .o-cell {
-    color: #3b82f6; /* Brighter blue for O */
+    color:rgb(223, 49, 18); /* Brighter blue for O */
     font-weight: bold;
     font-family: 'Courier New', Courier, monospace; /* Monospaced style for O */
     user-select: none; /* Prevent text selection */
@@ -402,7 +415,21 @@ const GameRoom = () => {
         font-size: 1.1rem;
     }
 }
+.player-info {
+                display: flex;
+                justify-content: space-between;
+                margin: 20px 0;
+                font-size: 1.2rem;
+                font-weight: bold;
+                color: #1e3a8a;
+                align-items: center;
+            }
 
+            .player-symbol {
+                font-size: 1.5rem;
+                color: #1e3a8a;
+                font-weight: bold;
+            }
 
 
             `}</style>
