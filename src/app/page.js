@@ -177,7 +177,7 @@ const GameRoom = () => {
                 setStatus(`Error submitting game results: ${result.message}`);
             }
         } catch (error) {
-            setStatus(`Network error: ${error.message}`);
+            // setStatus(`Network error: ${error.message}`);
             console.log(error);
         }
     };
