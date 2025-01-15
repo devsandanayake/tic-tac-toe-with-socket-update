@@ -166,11 +166,10 @@ const GameRoom = () => {
 
             console.log('Response status:', response.status);
 
-            const result = await response.json();
             if (response.ok) {
                 setStatus('Game results submitted successfully');
             } else {
-                setStatus(`Error submitting game results: ${result.message}`);
+                setStatus(`Error submitting game results: ${response.statusText}`);
             }
         } catch (error) {
             setStatus(`Network error: ${error.message}`);
@@ -184,7 +183,8 @@ const GameRoom = () => {
                 <div className="game-room-title">
                     {`Game Room: Tic Tac Toe`}
                 </div>
-                {status && <div className="status">{status}</div>}
+                {/* {status && <div className="status">{status}</div>} */}
+                {winner && <div className="winner-message">{`Winner: ${winner}`}</div>}
             </div>
             <div className="game-board">
                 {board.map((cell, index) => (
@@ -208,8 +208,7 @@ const GameRoom = () => {
             )}
             
             <style jsx>{`
-            //UI can only change in this area 
-                /* General Container */
+ 
 .game-container {
     padding: 20px;
     background-color: #e0f7fa; /* Light blue background */
@@ -349,6 +348,71 @@ const GameRoom = () => {
         font-size: 0.9rem;
     }
 }
+ 
+                .game-container {
+                    padding: 16px;
+                    background-color: #edf2f7;
+                    min-height: 100vh;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    animation: fadeIn 0.5s ease-in-out;
+                }
+
+                .game-info {
+                    text-align: center;
+                    margin-bottom: 24px;
+                    animation: slideIn 0.5s ease-in-out;
+                }
+
+                .game-room-title {
+                    font-size: 24px;
+                    font-weight: bold;
+                    color: #2b6cb0;
+                    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+                }
+
+                .status {
+                    margin-top: 8px;
+                    color: #e53e3e;
+                    font-weight: bold;
+                    animation: fadeIn 1s ease-in-out;
+                }
+
+                .winner-message {
+                    margin-top: 8px;
+                    color: #38a169;
+                    font-weight: bold;
+                    animation: fadeIn 1s ease-in-out;
+                }
+
+                .game-board {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 12px;
+                    margin-bottom: 16px;
+                    animation: bounceIn 1s ease-in-out;
+                }
+
+                .game-cell {
+                    width: 80px;
+                    height: 80px;
+                    background-color: #fff;
+                    border: 1px solid #e2e8f0;
+                    font-size: 24px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    transition: transform 0.3s, background-color 0.2s;
+                }
+
+                .game-cell:hover {
+                    background-color: #ebf8ff;
+                    transform: scale(1.1);
+                }
+ 
 
             `}</style>
         </div>
