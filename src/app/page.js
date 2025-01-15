@@ -208,8 +208,7 @@ const GameRoom = () => {
             )}
             
             <style jsx>{`
-            //UI can only change in this area 
-                /* General Container */
+            /* General Container */
 .game-container {
     padding: 20px;
     background-color: #e0f7fa; /* Light blue background */
@@ -219,6 +218,8 @@ const GameRoom = () => {
     align-items: center;
     justify-content: center;
     animation: fadeIn 0.5s ease-in-out;
+    font-family: 'Arial', sans-serif;
+    user-select: none; /* Prevent text selection */
 }
 
 /* Game Info Section */
@@ -226,77 +227,111 @@ const GameRoom = () => {
     text-align: center;
     margin-bottom: 24px;
     animation: slideIn 0.5s ease-in-out;
+    user-select: none; /* Prevent text selection */
 }
 
 .game-room-title {
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: 2rem;
+    font-weight: 800; /* Bolder font weight */
     color: #1d3557; /* Deep blue for titles */
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+    text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+    letter-spacing: 2px; /* Increased letter spacing for style */
+    text-transform: uppercase; /* Uppercase text for emphasis */
+    font-family: 'Verdana', sans-serif;
+    margin-bottom: 10px;
+    animation: textBounce 1s ease-in-out;
+    user-select: none; /* Prevent text selection */
 }
 
 .status {
     margin-top: 10px;
-    font-size: 1rem;
-    color: #e63946; /* Bright red for status messages */
+    font-size: 1.3rem;
+    color: #1e3a8a; /* Darker blue for status messages */
     font-weight: bold;
     animation: fadeIn 1s ease-in-out;
+    letter-spacing: 1px;
+    font-family: 'Courier New', Courier, monospace; /* Monospaced font for a tech feel */
+    text-transform: capitalize; /* Capitalize the first letter */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2); /* Slight shadow for a techy effect */
+    user-select: none; /* Prevent text selection */
 }
 
 /* Game Board */
 .game-board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    gap: 15px; /* Increased gap for better spacing */
     margin-bottom: 20px;
     animation: bounceIn 1s ease-in-out;
+    user-select: none; /* Prevent text selection */
 }
 
+/* Game Cell */
 .game-cell {
-    width: 80px;
-    height: 80px;
-    background-color: #f1faee; /* Soft mint green */
-    border: 2px solid #a8dadc; /* Light teal border */
-    font-size: 1.5rem;
+    width: 90px;
+    height: 90px;
+    background-color: #dbeafe; /* Soft blue */
+    border: 2px solid #93c5fd; /* Light blue border */
+    font-size: 2rem; /* Increased font size for better visibility */
+    font-weight: bold;
+    font-family: 'Arial', sans-serif; /* Clean and modern font */
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    border-radius: 6px;
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    text-align: center;
+    line-height: 1.2;
+    user-select: none; /* Prevent text selection */
 }
 
 .game-cell:hover {
-    background-color: #e9c46a; /* Soft yellow hover effect */
+    background-color: #60a5fa; /* Light blue hover effect */
     transform: scale(1.1);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
 }
 
 .x-cell {
-    color:rgb(16, 29, 216); /* Muted blue for X */
+    color: #1e40af; /* Muted blue for X */
     font-weight: bold;
+    font-family: 'Courier New', Courier, monospace; /* Monospaced style for X */
+    user-select: none; /* Prevent text selection */
 }
 
 .o-cell {
-    color:rgb(207, 35, 35); /* Warm orange-red for O */
+    color: #3b82f6; /* Brighter blue for O */
     font-weight: bold;
-}   
+    font-family: 'Courier New', Courier, monospace; /* Monospaced style for O */
+    user-select: none; /* Prevent text selection */
+}
 
 /* Reset Button */
 .reset-button {
     margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #2a9d8f; /* Rich teal button */
+    padding: 12px 24px; /* Increased padding for better touch targets */
+    background-color: #1d4ed8; /* Rich blue button */
     color: #ffffff;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px; /* Rounded corners */
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 1.2rem; /* Slightly larger font */
     font-weight: bold;
-    transition: background-color 0.3s ease;
+    font-family: 'Verdana', sans-serif; /* More modern font for buttons */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    user-select: none; /* Prevent text selection */
 }
 
 .reset-button:hover {
-    background-color: #21867a; /* Slightly darker teal for hover */
+    background-color: #2563eb; /* Slightly darker blue for hover */
+    transform: translateY(-2px); /* Button "lift" effect */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+.reset-button:active {
+    transform: translateY(1px); /* Button "press" effect */
 }
 
 /* Animations */
@@ -332,23 +367,39 @@ const GameRoom = () => {
     }
 }
 
+@keyframes textBounce {
+    0% {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(5px);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .game-cell {
-        width: 60px;
-        height: 60px;
-        font-size: 1.2rem;
+        width: 70px;
+        height: 70px;
+        font-size: 1.6rem;
     }
 
     .game-room-title {
-        font-size: 1.2rem;
+        font-size: 1.7rem;
     }
 
     .reset-button {
-        padding: 8px 16px;
-        font-size: 0.9rem;
+        padding: 10px 20px;
+        font-size: 1.1rem;
     }
 }
+
+
 
             `}</style>
         </div>
