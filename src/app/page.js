@@ -166,11 +166,10 @@ const GameRoom = () => {
 
             console.log('Response status:', response.status);
 
-            const result = await response.json();
             if (response.ok) {
                 setStatus('Game results submitted successfully');
             } else {
-                setStatus(`Error submitting game results: ${result.message}`);
+                setStatus(`Error submitting game results: ${response.statusText}`);
             }
         } catch (error) {
             setStatus(`Network error: ${error.message}`);
@@ -184,7 +183,8 @@ const GameRoom = () => {
                 <div className="game-room-title">
                     {`Game Room: Tic Tac Toe`}
                 </div>
-                {status && <div className="status">{status}</div>}
+                {/* {status && <div className="status">{status}</div>} */}
+                {winner && <div className="winner-message">{`Winner: ${winner}`}</div>}
             </div>
             <div className="game-board">
                 {board.map((cell, index) => (
@@ -234,6 +234,13 @@ const GameRoom = () => {
                 .status {
                     margin-top: 8px;
                     color: #e53e3e;
+                    font-weight: bold;
+                    animation: fadeIn 1s ease-in-out;
+                }
+
+                .winner-message {
+                    margin-top: 8px;
+                    color: #38a169;
                     font-weight: bold;
                     animation: fadeIn 1s ease-in-out;
                 }
