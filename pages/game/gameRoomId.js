@@ -197,7 +197,7 @@ const GameRoom = () => {
             <style jsx>{`
                 .game-container {
                     padding: 16px;
-                    background-color: #f7fafc;
+                    background-color:rgb(31, 43, 146);
                     min-height: 100vh;
                     display: flex;
                     flex-direction: column;

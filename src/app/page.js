@@ -206,7 +206,149 @@ const GameRoom = () => {
                     Reset
                 </button>
             )}
+            
             <style jsx>{`
+ 
+.game-container {
+    padding: 20px;
+    background-color: #e0f7fa; /* Light blue background */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Game Info Section */
+.game-info {
+    text-align: center;
+    margin-bottom: 24px;
+    animation: slideIn 0.5s ease-in-out;
+}
+
+.game-room-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1d3557; /* Deep blue for titles */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.status {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #e63946; /* Bright red for status messages */
+    font-weight: bold;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Game Board */
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+    animation: bounceIn 1s ease-in-out;
+}
+
+.game-cell {
+    width: 80px;
+    height: 80px;
+    background-color: #f1faee; /* Soft mint green */
+    border: 2px solid #a8dadc; /* Light teal border */
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    border-radius: 6px;
+}
+
+.game-cell:hover {
+    background-color: #e9c46a; /* Soft yellow hover effect */
+    transform: scale(1.1);
+}
+
+.x-cell {
+    color:rgb(16, 29, 216); /* Muted blue for X */
+    font-weight: bold;
+}
+
+.o-cell {
+    color:rgb(207, 35, 35); /* Warm orange-red for O */
+    font-weight: bold;
+}   
+
+/* Reset Button */
+.reset-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #2a9d8f; /* Rich teal button */
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.reset-button:hover {
+    background-color: #21867a; /* Slightly darker teal for hover */
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .game-cell {
+        width: 60px;
+        height: 60px;
+        font-size: 1.2rem;
+    }
+
+    .game-room-title {
+        font-size: 1.2rem;
+    }
+
+    .reset-button {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+}
+ 
                 .game-container {
                     padding: 16px;
                     background-color: #edf2f7;
@@ -270,63 +412,8 @@ const GameRoom = () => {
                     background-color: #ebf8ff;
                     transform: scale(1.1);
                 }
+ 
 
-                .x-cell {
-                    color: #3182ce;
-                    font-weight: bold;
-                }
-
-                .o-cell {
-                    color: #f56565;
-                    font-weight: bold;
-                }
-
-                .reset-button {
-                    margin-top: 16px;
-                    padding: 8px 16px;
-                    background-color: #38b2ac;
-                    color: white;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    transition: background-color 0.2s;
-                    font-weight: bold;
-                }
-
-                .reset-button:hover {
-                    background-color: #319795;
-                }
-
-                @keyframes fadeIn {
-                    0% {
-                        opacity: 0;
-                    }
-                    100% {
-                        opacity: 1;
-                    }
-                }
-
-                @keyframes slideIn {
-                    0% {
-                        transform: translateY(-20px);
-                    }
-                    100% {
-                        transform: translateY(0);
-                    }
-                }
-
-                @keyframes bounceIn {
-                    0% {
-                        transform: scale(0.8);
-                        opacity: 0;
-                    }
-                    60% {
-                        transform: scale(1.1);
-                    }
-                    100% {
-                        transform: scale(1);
-                        opacity: 1;
-                    }
-                }
             `}</style>
         </div>
     );
