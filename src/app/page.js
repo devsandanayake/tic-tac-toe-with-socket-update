@@ -188,7 +188,7 @@ const GameRoom = () => {
                 <div className="game-room-title">
                     {`Game Room: Tic Tac Toe`}
                 </div>
-                {/* {status && <div className="status">{status}</div>} */}
+                {status && <div className="status">{status}</div>}
  
                 {winner && <div className="winner-message">{`Winner: ${winner}`}</div>}
  
