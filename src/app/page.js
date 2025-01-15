@@ -189,6 +189,9 @@ const GameRoom = () => {
                     {`Game Room: Tic Tac Toe`}
                 </div>
                 {status && <div className="status">{status}</div>}
+ 
+                {winner && <div className="winner-message">{`Winner: ${winner}`}</div>}
+ 
             </div>
             <div className="game-board">
                 {board.map((cell, index) => (
@@ -212,8 +215,9 @@ const GameRoom = () => {
             )}
             
             <style jsx>{`
-            /* General Container */
-.game-container {
+ 
+ .game-container {
+ 
     padding: 20px;
     background-color: #e0f7fa; /* Light blue background */
     min-height: 100vh;
@@ -402,10 +406,9 @@ const GameRoom = () => {
         font-size: 1.1rem;
     }
 }
-
-
-
-            `}</style>
+ 
+    `}</style>
+ 
         </div>
     );
 };
