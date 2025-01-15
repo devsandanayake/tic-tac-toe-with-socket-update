@@ -3,7 +3,6 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
-import axios from 'axios';
 
 const socket = io('http://144.126.243.236:3003');
 
@@ -136,8 +135,6 @@ const GameRoom = () => {
         }
     }, [winner, isBoardFull]);
 
-    
-    
     const sendGameResults = async (winner, isTie) => {
         const payload = {
             room: {
@@ -157,31 +154,27 @@ const GameRoom = () => {
                 },
             ],
         };
-    
-        console.log('Sending game results payload:', payload);
-    
         try {
-            const response = await axios.post(
-                'https://safa-backend.safaesport.com/api/external_game/v1/game_session_finish',
-                payload,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                }
-            );
-    
+            const response = await fetch('https://safa-backend.safaesport.com/api/external_game/v1/game_session_finish', {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
             console.log('Response status:', response.status);
-            console.log('Response data:', response.data);
-    
-            if (response.status === 200) {
+
+            const result = await response.json();
+            if (response.ok) {
                 setStatus('Game results submitted successfully');
             } else {
-                setStatus(`Error submitting game results: ${response.data.message}`);
+                setStatus(`Error submitting game results: ${result.message}`);
             }
         } catch (error) {
             setStatus(`Network error: ${error.message}`);
-            console.log('Network error:', error);
+            console.log(error);
         }
     };
 
