@@ -216,8 +216,7 @@ const GameRoom = () => {
             
             <style jsx>{`
  
- .game-container {
- 
+.game-container {
     padding: 20px;
     background-color: #e0f7fa; /* Light blue background */
     min-height: 100vh;
