@@ -308,7 +308,7 @@ const GameRoom = () => {
 }
 
 .o-cell {
-    color: #3b82f6; /* Brighter blue for O */
+    color:rgb(223, 49, 18); /* Brighter blue for O */
     font-weight: bold;
     font-family: 'Courier New', Courier, monospace; /* Monospaced style for O */
     user-select: none; /* Prevent text selection */
