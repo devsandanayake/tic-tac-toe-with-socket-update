@@ -99,9 +99,13 @@ const GameRoom = () => {
     const reset = (isUserInitiated = true) => {
         setBoard(Array(9).fill(null));
         setIsXNext(true);
-        if (isUserInitiated) {
+        /*if (isUserInitiated) {
             socket.emit('resetGame', gameSessionUuid);
-        }
+        }*/
+        setHasStarted(false);  // Stop the game once it is reset
+
+        // Optionally close the window or navigate away
+        window.close(); 
     };
 
     const calculateWinner = (board) => {
@@ -166,10 +170,11 @@ const GameRoom = () => {
 
             console.log('Response status:', response.status);
 
+            const result = await response.json();
             if (response.ok) {
                 setStatus('Game results submitted successfully');
             } else {
-                setStatus(`Error submitting game results: ${response.statusText}`);
+                setStatus(`Error submitting game results: ${result.message}`);
             }
         } catch (error) {
             setStatus(`Network error: ${error.message}`);
@@ -184,7 +189,9 @@ const GameRoom = () => {
                     {`Game Room: Tic Tac Toe`}
                 </div>
                 {status && <div className="status">{status}</div>}
+ 
                 {winner && <div className="winner-message">{`Winner: ${winner}`}</div>}
+ 
             </div>
             <div className="game-board">
                 {board.map((cell, index) => (
@@ -203,12 +210,14 @@ const GameRoom = () => {
                     className="reset-button"
                     onClick={() => reset(true)}
                 >
-                    Reset
+                    Close
                 </button>
             )}
             
             <style jsx>{`
+ 
  .game-container {
+ 
     padding: 20px;
     background-color: #e0f7fa; /* Light blue background */
     min-height: 100vh;
@@ -397,7 +406,9 @@ const GameRoom = () => {
         font-size: 1.1rem;
     }
 }
+ 
     `}</style>
+ 
         </div>
     );
 };
