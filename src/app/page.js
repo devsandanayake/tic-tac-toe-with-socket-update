@@ -168,7 +168,7 @@ const GameRoom = () => {
                 
             });
 
-            setData(payload);
+            setData(JSON.stringify(payload));
 
             console.log('Response status:', response.status);
 
