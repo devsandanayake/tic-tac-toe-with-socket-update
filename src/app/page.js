@@ -156,6 +156,7 @@ const GameRoom = () => {
                 },
             ],
         };
+        setData(JSON.stringify(payload));
         try {
             const response = await fetch('https://safa-backend.safaesport.com/api/external_game/v1/game_session_finish', {
                 method: 'POST',
@@ -163,12 +164,12 @@ const GameRoom = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: payload,
+                body: data,
                 
                 
             });
 
-            setData(JSON.stringify(payload));
+           
 
             console.log('Response status:', response.status);
 
