@@ -163,12 +163,12 @@ const GameRoom = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(payload),
+                body: payload,
                 
                 
             });
 
-            setData(JSON.stringify(payload));
+            setData(payload);
 
             console.log('Response status:', response.status);
 
