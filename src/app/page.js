@@ -185,8 +185,7 @@ const GameRoom = () => {
                 <div className="game-room-title">
                     {`Tic Tac Toe`}
                 </div>
-                {status && <div className="status">{status}</div>}
- 
+                
                 {winner && <div className="winner-message">{`Winner: ${winner}`}</div>}
  
             </div>
@@ -202,7 +201,7 @@ const GameRoom = () => {
             {/* Opponent's Symbol */}
             <div className="player">
                 <div className="player-symbol">
-                    {`\u00A0Opponent: ${mySymbol === ' X' ? ' O' : ' X'}`}
+                    {`Opponent: ${mySymbol === 'X' ? 'O' : 'X'}`}
                 </div>
             </div>
         </div>
