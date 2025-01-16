@@ -15,6 +15,7 @@ const GameRoom = () => {
 
     const [board, setBoard] = useState(Array(9).fill(null));
     const [isXNext, setIsXNext] = useState(true);
+    const[data , setData] = useState([]);
     const [status, setStatus] = useState('');
     const [hasStarted, setHasStarted] = useState(false);
     const [mySymbol, setMySymbol] = useState('');
@@ -163,7 +164,11 @@ const GameRoom = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(payload),
+                
+                
             });
+
+            setData(JSON.stringify(payload));
 
             console.log('Response status:', response.status);
 
@@ -187,7 +192,8 @@ const GameRoom = () => {
                 </div>
                 {/* Game Status */}
                 <div className="status">
-                    {gameStatus} || {status}
+                    {gameStatus} || {status} 
+                    {data}
                 </div>
                  
                 {winner && <div className="winner-message">{`Winner: ${winner}`}</div>}
