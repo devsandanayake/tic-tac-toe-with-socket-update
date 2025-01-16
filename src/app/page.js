@@ -163,7 +163,7 @@ const GameRoom = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: data,
+                body: JSON.stringify(payload),
                 
                 
             });
@@ -192,11 +192,10 @@ const GameRoom = () => {
                 </div>
                 {/* Game Status */}
                 <div className="status">
-                    {gameStatus} || {status} 
+                    {gameStatus}
                 </div>
                  
                 {winner && <div className="winner-message">{`Winner: ${winner}`}</div>}
-                {data}
  
             </div>
             {/* Player Info Section */}
