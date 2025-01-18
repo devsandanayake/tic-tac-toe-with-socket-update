@@ -1,7 +1,7 @@
 const http = require('http');
 const io = require('socket.io')({
     cors: {
-        origin: "http://144.126.243.236:3001", // Allow requests from this origin
+        origin: "http://144.126.243.236:3001" || "https://tictac.safaegames.com", // Allow requests from this origin
         methods: ["GET", "POST"],
         allowedHeaders: ['Content-Type'],
         credentials: true,
