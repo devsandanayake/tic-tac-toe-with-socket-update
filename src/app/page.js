@@ -192,7 +192,7 @@ const GameRoom = () => {
                 </div>
                 {/* Game Status */}
                 <div className="status">
-                    {gameStatus}
+                    {gameStatus} || {status}
                 </div>
                  
                 {winner && <div className="winner-message">{`Winner: ${winner}`}</div>}
