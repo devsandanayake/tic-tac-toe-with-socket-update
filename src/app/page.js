@@ -170,7 +170,7 @@ const GameRoom = () => {
 
            
 
-            console.log('Response status:', response.status);
+            console.log('Response status:', response);
 
             const result = await response.json();
             if (response.ok) {
