@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 
-const socket = io('http://144.126.243.236:3003');
+const socket = io('https://tictacbackend.safaegames.com');
 
 const GameRoom = () => {
     const router = useRouter();
